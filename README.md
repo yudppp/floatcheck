@@ -15,12 +15,12 @@ This is a custom linter for [golangci-lint](https://golangci-lint.run/) that che
 
 1.  **Install `golangci-lint`** if you haven't already:
     ```bash
-    go install [github.com/golangci/golangci-lint/cmd/golangci-lint@latest](https://github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
     ```
 
 2.  **Clone this repository:**
     ```bash
-    git clone [https://github.com/yudppp/floatcheck.git](https://github.com/yudppp/floatcheck.git)
+    git clone https://github.com/yudppp/floatcheck.git
     cd floatcheck
     ```
 
@@ -43,7 +43,7 @@ linters-settings:
     floatcheck:
       path: /path/to/your/floatcheck/floatcheck.so # Replace with the actual path to floatcheck.so
       description: "Checks for potentially problematic float formatting and operations"
-      original-url: "[https://github.com/yudppp/floatcheck](https://github.com/yudppp/floatcheck)" 
+      original-url: "https://github.com/yudppp/floatcheck" 
 ````
 
 **Important:** Make sure to replace `/path/to/your/floatcheck/floatcheck.so` with the actual absolute or relative path to the built `floatcheck.so` file in your system. Also, update the `original-url` to your repository's URL.
