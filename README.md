@@ -15,20 +15,14 @@ This is a custom linter that checks for potential issues related to floating-poi
 
 To use floatcheck, you need to build it and then run it via `go vet` with the `-vettool` flag.
 
-1.  **Clone this repository:**
+1.  **Install floatcheck:**
     ```bash
-    git clone https://github.com/yudppp/floatcheck.git
-    cd floatcheck
+    go install github.com/yudppp/floatcheck/cmd/floatcheck@latest
     ```
 
-2.  **Build the linter:**
+2.  **Run the linter on your Go project using `go vet`:**
     ```bash
-    go build -o floatcheck ./cmd/floatcheck
-    ```
-
-3.  **Run the linter on your Go project using `go vet`:**
-    ```bash
-    go vet -vettool=./floatcheck your_project_path/...
+    go vet -vettool=$(which floatcheck) your_project_path/...
     ```
 
     Replace `your_project_path/...` with the path to the Go packages you want to analyze.
