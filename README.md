@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yudppp/floatcheck)](https://goreportcard.com/report/github.com/yudppp/floatcheck)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-This is a custom linter for [golangci-lint](https://golangci-lint.run/) that checks for potential issues related to floating-point number precision in Go code. Specifically, it currently detects:
+This is a custom linter that checks for potential issues related to floating-point number precision in Go code. Specifically, it currently detects:
 
 - Usage of `fmt.Sprintf` with floating-point format specifiers (`%.nf`, `%.f`, `%.ng`, `%e`).
 - Division operations where at least one of the operands is a floating-point number.
@@ -11,54 +11,33 @@ This is a custom linter for [golangci-lint](https://golangci-lint.run/) that che
 
 **Warning:** This linter provides warnings for potentially problematic patterns. It's up to the user to evaluate if the reported instances are actual issues in their specific context.
 
-## Installation
+## Installation and Usage
 
-1.  **Install `golangci-lint`** if you haven't already:
-    ```bash
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-    ```
+To use floatcheck, you need to build it and then run it via `go vet` with the `-vettool` flag.
 
-2.  **Clone this repository:**
+1.  **Clone this repository:**
     ```bash
     git clone https://github.com/yudppp/floatcheck.git
     cd floatcheck
     ```
 
-3.  **Build the custom linter plugin:**
+2.  **Build the linter:**
     ```bash
-    go build -buildmode=plugin -o floatcheck.so ./cmd/floatcheck
+    go build -o floatcheck ./cmd/floatcheck
     ```
 
-## Configuration
+3.  **Run the linter on your Go project using `go vet`:**
+    ```bash
+    go vet -vettool=./floatcheck your_project_path/...
+    ```
 
-To enable this custom linter in your project, you need to configure your `.golangci.yml` file. Add the following to your `linters` and `linters-settings` sections:
+    Replace `your_project_path/...` with the path to the Go packages you want to analyze.
 
-```yaml
-linters:
-  enable:
-    - floatcheck # Enable the custom linter
+## Integration with `go vet`
 
-linters-settings:
-  custom:
-    floatcheck:
-      path: /path/to/your/floatcheck/floatcheck.so # Replace with the actual path to floatcheck.so
-      description: "Checks for potentially problematic float formatting and operations"
-      original-url: "https://github.com/yudppp/floatcheck" 
-````
+This linter is designed to be used with `go vet` via the `-vettool` flag. You need to build floatcheck as an executable and then point `go vet` to it.
 
-**Important:** Make sure to replace `/path/to/your/floatcheck/floatcheck.so` with the actual absolute or relative path to the built `floatcheck.so` file in your system. Also, update the `original-url` to your repository's URL.
-
-## Usage
-
-Once configured, you can run `golangci-lint` as you normally would:
-
-```bash
-golangci-lint run
-```
-
-The linter will then analyze your Go code and report any findings related to floating-point formatting, division, and equality comparisons based on the rules implemented in `floatcheck.go`.
-
-## Examples
+## Example Usage
 
 Consider the following Go code:
 
@@ -68,17 +47,23 @@ package main
 import "fmt"
 
 func main() {
-	var pi float64 = 3.14159
-	var result float32 = 1.0 / 3.0
+  var pi float64 = 3.14159
+  var result float32 = 1.0 / 3.0
 
-	formatted := fmt.Sprintf("%.2f", pi) // This will trigger a warning
-	if result == 0.333 { // This will trigger a warning
-		println("Result is approximately one-third")
-	}
+  formatted := fmt.Sprintf("%.2f", pi) // This will trigger a warning
+  if result == 0.333 { // This will trigger a warning
+    println("Result is approximately one-third")
+  }
 }
+````
+
+To analyze this code, navigate to the root of your project and run:
+
+```bash
+go vet -vettool=./floatcheck ./example
 ```
 
-Running `golangci-lint run` with `floatcheck` enabled will report the potential issues in the `Sprintf` format and the equality comparison.
+This will report the potential issues in the `Sprintf` format and the equality comparison.
 
 ## Contributing
 
@@ -88,5 +73,4 @@ Please ensure that your contributions adhere to the Go style guidelines and incl
 
 ## License
 
-[The MIT License (MIT)](https://github.com/yudppp/pprof-mcp-agent/blob/main/LICENSE)
-
+[The MIT License (MIT)](https://github.com/yudppp/floatcheck/blob/main/LICENSE)

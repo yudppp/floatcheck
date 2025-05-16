@@ -65,7 +65,9 @@ func run(pass *analysis.Pass) (any, error) {
 
 		return true
 	}
-	ast.Inspect(pass.Files[0], inspect)
+	for _, file := range pass.Files {
+		ast.Inspect(file, inspect)
+	}
 	return nil, nil
 }
 
