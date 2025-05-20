@@ -1,70 +1,65 @@
 # floatcheck
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yudppp/floatcheck)](https://goreportcard.com/report/github.com/yudppp/floatcheck)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-This is a custom linter that checks for potential issues related to floating-point number precision in Go code. Specifically, it currently detects:
 
-- Usage of `fmt.Sprintf` with floating-point format specifiers (`%.nf`, `%.f`, `%.ng`, `%e`).
-- Division operations where at least one of the operands is a floating-point number.
-- Equality comparisons (`==`, `!=`) between floating-point numbers.
-- Relational comparisons (`<`, `<=`, `>`, `>=`) between floating-point numbers.
+floatcheck is a custom linter for Go that detects potential floating-point precision issues in your code.
 
-**Warning:** This linter provides warnings for potentially problematic patterns. It's up to the user to evaluate if the reported instances are actual issues in their specific context.
+## What it detects
+- Usage of floating-point format specifiers (e.g., `%.nf`, `%.f`) in `fmt.Sprintf`
+- Division operations involving floating-point numbers
+- Equality comparisons (`==`, `!=`) between floating-point numbers
+- Relational comparisons (`<`, `<=`, `>`, `>=`) between floating-point numbers
 
-## Installation and Usage
+**Warning:** This linter warns about potential patterns. It is up to the user to determine if the warning is an actual issue in their context.
 
-To use floatcheck, you need to build it and then run it via `go vet` with the `-vettool` flag.
+## Installation & Usage
 
-1.  **Install floatcheck:**
-    ```bash
-    go install github.com/yudppp/floatcheck/cmd/floatcheck@latest
-    ```
+### 1. To check for all patterns at once
+```bash
+go install github.com/yudppp/floatcheck/cmd/floatcheck
+```
+```bash
+go vet -vettool=$(which floatcheck) your_project_path/...
+```
 
-2.  **Run the linter on your Go project using `go vet`:**
-    ```bash
-    go vet -vettool=$(which floatcheck) your_project_path/...
-    ```
+### 2. To use each check individually
+- Format only: `floatcheck_format`
+- Division only: `floatcheck_division`
+- Comparison only: `floatcheck_comparison`
 
-    Replace `your_project_path/...` with the path to the Go packages you want to analyze.
+```bash
+go install github.com/yudppp/floatcheck/cmd/floatcheck_format
+# or
+go install github.com/yudppp/floatcheck/cmd/floatcheck_division
+# or
+go install github.com/yudppp/floatcheck/cmd/floatcheck_comparison
+```
 
-## Integration with `go vet`
+## Testing
 
-This linter is designed to be used with `go vet` via the `-vettool` flag. You need to build floatcheck as an executable and then point `go vet` to it.
+```bash
+go test ./...
+```
 
-## Example Usage
+Or you can manually check the samples under the `testdata` directory.
 
-Consider the following Go code:
+## Example
 
 ```go
 package main
-
 import "fmt"
-
 func main() {
   var pi float64 = 3.14159
   var result float32 = 1.0 / 3.0
-
-  formatted := fmt.Sprintf("%.2f", pi) // This will trigger a warning
-  if result == 0.333 { // This will trigger a warning
+  formatted := fmt.Sprintf("%.2f", pi) // warning
+  if result == 0.333 { // warning
     println("Result is approximately one-third")
   }
 }
-````
-
-To analyze this code, navigate to the root of your project and run:
-
-```bash
-go vet -vettool=./floatcheck ./example
 ```
 
-This will report the potential issues in the `Sprintf` format and the equality comparison.
-
 ## Contributing
-
-Contributions to this linter are welcome\! If you have ideas for new checks or improvements, feel free to open an issue or submit a pull request.
-
-Please ensure that your contributions adhere to the Go style guidelines and include appropriate tests.
+Pull requests and issues are welcome! Please follow the Go style guide and add tests for new features or bug fixes.
 
 ## License
-
-[The MIT License (MIT)](https://github.com/yudppp/floatcheck/blob/main/LICENSE)
+[MIT License](https://github.com/yudppp/floatcheck/blob/main/LICENSE)

@@ -9,8 +9,26 @@ import (
 	"golang.org/x/tools/go/analysis/analysistest"
 )
 
-// TestAnalyzer is a test for Analyzer.
-func TestAnalyzer(t *testing.T) {
+// TestAllAnalyzer is a test for AllAnalyzer.
+func TestAllAnalyzer(t *testing.T) {
 	testdata := testutil.WithModules(t, analysistest.TestData(), nil)
-	analysistest.Run(t, testdata, floatcheck.Analyzer, "ok", "ng")
+	analysistest.Run(t, testdata, floatcheck.AllAnalyzer, "all")
+}
+
+// TestFormatAnalyzer is a test for FormatAnalyzer.
+func TestFormatAnalyzer(t *testing.T) {
+	testdata := testutil.WithModules(t, analysistest.TestData(), nil)
+	analysistest.Run(t, testdata, floatcheck.FormatAnalyzer, "format")
+}
+
+// TestDivisionAnalyzer is a test for DivisionAnalyzer.
+func TestDivisionAnalyzer(t *testing.T) {
+	testdata := testutil.WithModules(t, analysistest.TestData(), nil)
+	analysistest.Run(t, testdata, floatcheck.DivisionAnalyzer, "division")
+}
+
+// TestComparisonAnalyzer is a test for ComparisonAnalyzer.
+func TestComparisonAnalyzer(t *testing.T) {
+	testdata := testutil.WithModules(t, analysistest.TestData(), nil)
+	analysistest.Run(t, testdata, floatcheck.ComparisonAnalyzer, "comparison")
 }

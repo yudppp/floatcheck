@@ -14,7 +14,7 @@ import (
 // Analyzers returns analyzers of floatcheck.
 func analyzers() []*analysis.Analyzer {
 	return []*analysis.Analyzer{
-		floatcheck.Analyzer,
+		floatcheck.AllAnalyzer,
 	}
 }
 
