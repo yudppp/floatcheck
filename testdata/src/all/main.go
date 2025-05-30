@@ -9,6 +9,10 @@ func main() {
 	// Floating-point formatting
 	_ = fmt.Sprintf("%.1f", f1) // want "potential floating-point precision issue in Sprintf format: .1f"
 	_ = fmt.Sprintf("%.2f", f2) // want "potential floating-point precision issue in Sprintf format: .2f"
+	_ = fmt.Sprintf("%F", f1)   // want "potential floating-point precision issue in Sprintf format: %F"
+	_ = fmt.Sprintf("%g", f1)   // want "potential floating-point precision issue in Sprintf format: %g"
+	_ = fmt.Sprintf("%G", f1)   // want "potential floating-point precision issue in Sprintf format: %G"
+	_ = fmt.Sprintf("%e", f1)   // want "potential floating-point precision issue in Sprintf format: %e"
 
 	// Floating-point division
 	_ = f1 / 2.0 // want "potential floating-point division"
